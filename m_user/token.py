@@ -14,6 +14,12 @@ class Token(object):
         return str(self._md5.hexdigest())
     def getUser(self,token):
         return self._loginTokens.get(str(token))
+    def isCar(self,token):
+        user = self._loginTokens.get(token)
+        if not user:
+            return None
+        else:
+            return bool(user.iscar)
     def dropToken(self,token):
         print self._loginTokens
         try:

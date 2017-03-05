@@ -7,10 +7,10 @@ class Station(object):# Latitude and longitude
 class ObjectStations(object):
     def __init__(self):
         self._station = {}
-    def addStation(self,token,station):
-        self._station[token] = station
-    def changeStation(self,token,station):
-        self._station[token] = station
+    def addStation(self,token,lat,lon):
+        self._station[token] = Station(lat,lon)
+    def changeStation(self,token,lat,lon):
+        self._station[token] = Station(lat,lon)
     def removeStation(token):
         try:
             return self._station.pop(token)
