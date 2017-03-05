@@ -8,16 +8,17 @@ class Token(object):
     def __init__(self):
         self._loginTokens = {}
         self._md5 = hashlib.md5() 
-    def createToken(self,username):
-        self._md5.update(str(username)+str(int(random.random()*10000)))
-        self._loginTokens[str(self._md5.hexdigest())] = username
+    def createToken(self,user):
+        self._md5.update(str(user.username))
+        self._loginTokens[str(self._md5.hexdigest())] = user
         return str(self._md5.hexdigest())
-    def getUsername(self,md5):
-        return self._loginTokens.get(str(md5))
+    def getUser(self,token):
+        return self._loginTokens.get(str(token))
     def dropToken(self,token):
+        print self._loginTokens
         try:
-            username = self._loginTokens.pop(token)
-            return username
+            user = self._loginTokens.pop(token)
+            return user
         except KeyError:
             return None
 

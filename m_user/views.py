@@ -30,7 +30,7 @@ def login(request):
             user = m_User.objects.get(username=username)
             pwd = encodePwd.encode(str(password))
             if str(user.pwd) == pwd:
-                token = userToken.createToken(username)
+                token = userToken.createToken(user)
                 return HttpResponse(json.dumps({
                         'action':'signin',
                         'result':'succeed',
@@ -66,7 +66,7 @@ def logout(request):
             return HttpResponse(json.dumps({
                     'action':'logout',
                     'result':'succeed',
-                    'username':r,
+                    'username':r.username,
                 }))                  
 
 @csrf_exempt
