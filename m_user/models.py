@@ -22,10 +22,15 @@ COLLEGES=(
     ('cailiao','先进材料与纳米科技学院'),
     ('wangan','网络与信息安全学院'),
 )
+ISCARCHOICES = (
+    ('0','student'),
+    ('1','driver'),
+)
 
 class m_User(models.Model):
     username = models.CharField(max_length=50)
     pwd = models.CharField(max_length=33)
+    iscar = models.CharField(max_length=1,choices=ISCARCHOICES, default='0')
     college = models.CharField(max_length=20,choices=COLLEGES, blank=True)#need add limit
     studentid = models.CharField(max_length=11,blank=True)
     truename = models.CharField(max_length=20,blank=True)
