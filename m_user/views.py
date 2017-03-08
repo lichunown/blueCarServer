@@ -98,6 +98,85 @@ def signup(request):
             'errorResult':'requestGET',
         }))
 
+@csrf_exempt
+def modify(request):
+    if request.method=='POST':
+        if request.POST.get('token'):
+            user = userToken.getUser(request.POST.get('token'))
+            if not user:
+                return HttpResponse(json.dumps({
+                    'action':'modify',
+                    'result':'error',
+                    'errorResult':'userDoNotExist',
+                }))                
+            modifyData = request.POST.get('modifydata')
+            try:
+                modifyData = json.loads(modifyData)
+            except Exception,e:
+                return HttpResponse(json.dumps({
+                    'action':'modify',
+                    'result':'error',
+                    'errorResult':e,
+                }))                
+            if modifyData.get('college'):
+                user.college = modifyData.get('college')
+            if modifyData.get('studentid'):
+                user.studentid = modifyData.get('studentid')
+            if modifyData.get('truename'):
+                user.truename = modifyData.get('truename')
+            user.save()
+            return HttpResponse(json.dumps({
+                'action':'modify',
+                'result':'succeed',
+            }))
+        else:
+            return HttpResponse(json.dumps({
+                'action':'modify',
+                'result':'error',
+                'errorResult':'tokenDoNotExist',
+            }))
+
+
+
+@csrf_exempt
+def getdata(request):
+    if request.method=='POST':
+        getdatausername = request.POST.get('getdatausername')
+        token = request.POST.get('token')
+        user = userToken.getUser(token)
+        if user:
+            if user.username == getdatausername:
+                return HttpResponse(json.dumps({
+                    'action':'getuserdata',
+                    'result':'succeed',
+                    'data':{
+                        'college':user.college,
+                        'studentid':user.studentid,
+                        'truename':user.truename,
+                        'iscar':user.iscar,
+                    },
+                }))
+        # not user himself
+        user = m_User.objects.filter(username = getdatausername)
+        if user:
+            user = user[0]           
+            return HttpResponse(json.dumps({
+                'action':'getuserdata',
+                'result':'succeed',
+                'data':{
+                    'college':user.college,
+                    'truename':user.truename,
+                    'iscar':user.iscar,
+                },
+            }))
+        else:
+            return HttpResponse(json.dumps({
+                'action':'getuserdata',
+                'result':'error',
+                'errorResult':'usernameDoNotExist',
+            }))
+
+
 
 
 
