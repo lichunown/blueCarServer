@@ -24,8 +24,6 @@ def login(request):
     if request.method=='POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print username
-        print password
         if len(m_User.objects.filter(username=username)):
             user = m_User.objects.get(username=username)
             pwd = encodePwd.encode(str(password))

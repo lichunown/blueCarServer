@@ -21,14 +21,37 @@ def getPage(url,post = None,decode = 'UTF-8'):
 
 URL = 'http://127.0.0.1:8000/'
 
+def getToken(data):
+    data = json.loads(data)
+    return data['token']
+
 def signup(username,password):
-    print getPage(URL+'user/signup',{
+    return getPage(URL+'user/signup',{
         'username':username,
         'password':password,
-        })
+    })
     
 def login(username,password):
-    print getPage(URL+'user/login',{
+    return getPage(URL+'user/login',{
         'username':username,
         'password':password,
-        })
+    })
+
+def logout(token):
+    return getPage(URL+'user/logout',{
+        'token':token,
+    })
+
+def modify(token,modifyData):
+    return getPage(URL+'user/logout',{
+        'token':token,
+        'modifydata':json.dumps(modifyData),
+    })
+
+def getdata(username,token=None):
+    data = {
+        'getdatausername':username,
+    }
+    if token:
+        data['token'] = token
+    return getPage(URL+'user/logout',data)
