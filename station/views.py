@@ -14,17 +14,17 @@ from m_user.models import m_User
 def send(request):
     if request.method=='POST':
         token = request.POST.get('token')
-        Latitude = request.POST.get('Latitude')
+        latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
         if userToken.isCar(token):
-            CarStations.changeStation(token,Latitude,longitude)
+            CarStations.changeStation(token,latitude,longitude)
             return HttpResponse(json.dumps({
                 'action':'send',
                 'result':'succeed',
                 'station':'CarStations',
             }))
         else:
-            peopleStations.changeStation(token,Latitude,longitude)
+            peopleStations.changeStation(token,latitude,longitude)
             return HttpResponse(json.dumps({
                 'action':'send',
                 'result':'succeed',
@@ -33,8 +33,22 @@ def send(request):
 
 @csrf_exempt
 def getcars(request):
-    pass
+    if request.method =='POST':
+        token = request.POST.get('token')
+        stations = CarStations.getStations()
+        return HttpResponse(json.dumps({
+            'action':'getpeoples',
+            'result':'succeed',
+            'stations':stations,
+        }))
 
 @csrf_exempt
 def getpeoples(request):
-    pass
+    if request.method =='POST':
+        token = request.POST.get('token')
+        stations = peopleStations.getStations()
+        return HttpResponse(json.dumps({
+            'action':'getpeoples',
+            'result':'succeed',
+            'stations':stations,
+        }))
