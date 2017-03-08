@@ -55,3 +55,56 @@ def getdata(username,token=None):
     if token:
         data['token'] = token
     return getPage(URL+'user/logout',data)
+
+
+class User(object):
+    def __init__(self,username=None,password=None):
+        self.username = username
+        self.password = password
+        self.token = None
+        self.data = None
+
+    def signup(self):
+        return getPage(URL+'user/signup',{
+            'username':self.username,
+            'password':self.password,
+        })        
+
+    def login(self):
+        result = getPage(URL+'user/login',{
+            'username':self.username,
+            'password':self.password,
+        })
+        result = json.loads(result)
+        if result['result'] == 'succeed':
+            self.token = result['token']
+            return True
+        else:
+            False
+
+    def logout(self):
+        return getPage(URL+'user/logout',{
+            'token':self.token,
+        })
+    def getdata(self,username=None):
+        if username:
+            getdatausername = self.username
+            result = getPage(URL+'user/logout',{
+                'token':self.token,
+                'getdatausername':getdatausername,
+            })
+            result = json.loads(result)
+            if result['result'] =='succeed':
+                self.data = result['data']
+            return result
+        else:
+            getdatausername = username
+            return getPage(URL+'user/logout',{
+                'token':self.token,
+                'getdatausername':getdatausername,
+            })
+    def modify(self):
+        return getPage(URL+'user/logout',{
+            'token':token,
+            'modifydata':json.dumps(self.data),
+        })        
