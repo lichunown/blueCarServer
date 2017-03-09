@@ -63,7 +63,7 @@ class User(object):
         self.password = password
         self.token = None
         self.data = None
-        self.situation = [0,0]
+        self.position = [0,0]
     def signup(self):
         return getPage(URL+'user/signup',{
             'username':self.username,
@@ -109,16 +109,16 @@ class User(object):
             'modifydata':json.dumps(self.data),
         })        
     def send(self):
-        return getPage(URL+'station/send',{
+        return getPage(URL+'position/send',{
             'token':self.token,
-            'latitude':self.situation[0],
-            'longitude':self.situation[1],
+            'latitude':self.position[0],
+            'longitude':self.position[1],
         }) 
     def getcars(self):
-        return getPage(URL+'station/getcars',{
+        return getPage(URL+'position/getcars',{
             'token':self.token,
         }) 
     def getpeoples(self):
-        return getPage(URL+'station/getcars',{
+        return getPage(URL+'position/getcars',{
             'token':self.token,
     }) 
