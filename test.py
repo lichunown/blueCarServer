@@ -63,7 +63,7 @@ class User(object):
         self.password = password
         self.token = None
         self.data = None
-
+        self.situation = [0,0]
     def signup(self):
         return getPage(URL+'user/signup',{
             'username':self.username,
@@ -80,16 +80,16 @@ class User(object):
             self.token = result['token']
             return True
         else:
-            False
+            return False
 
     def logout(self):
         return getPage(URL+'user/logout',{
             'token':self.token,
         })
     def getdata(self,username=None):
-        if username:
+        if not username:
             getdatausername = self.username
-            result = getPage(URL+'user/logout',{
+            result = getPage(URL+'user/getdata',{
                 'token':self.token,
                 'getdatausername':getdatausername,
             })
@@ -99,12 +99,26 @@ class User(object):
             return result
         else:
             getdatausername = username
-            return getPage(URL+'user/logout',{
+            return getPage(URL+'user/getdata',{
                 'token':self.token,
                 'getdatausername':getdatausername,
             })
     def modify(self):
-        return getPage(URL+'user/logout',{
-            'token':token,
+        return getPage(URL+'user/modify',{
+            'token':self.token,
             'modifydata':json.dumps(self.data),
         })        
+    def send(self):
+        return getPage(URL+'station/send',{
+            'token':self.token,
+            'latitude':self.situation[0],
+            'longitude':self.situation[1],
+        }) 
+    def getcars(self):
+        return getPage(URL+'station/getcars',{
+            'token':self.token,
+        }) 
+    def getpeoples(self):
+        return getPage(URL+'station/getcars',{
+            'token':self.token,
+    }) 
