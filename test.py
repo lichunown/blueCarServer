@@ -120,7 +120,7 @@ class User(object):
             'token':self.token,
         }) 
     def getpeoples(self):
-        return getPage(URL+'position/getcars',{
+        return getPage(URL+'position/getpeoples',{
             'token':self.token,
         }) 
     def callcar(self):
@@ -155,5 +155,20 @@ class User(object):
 qwer = User()
 qwer.username = 'qwer'
 qwer.password = 'qwer'
+asdf = User('sadf','asdf')
+c1 = User('c1','c1')
+c2 = User('c2','c2')
 print 'qwer login ' + str(qwer.login())
+print 'asdf login ' + str(asdf.login())
+print 'c1 login ' + str(c1.login())
+print 'c2 login ' + str(c2.login())
 
+c1.position = [100.2,200.4]
+c2.position = [150.2,250.4]
+qwer.position = [50.1,30.2]
+asdf.position = [55.1,39.2]
+
+c1.send()
+c2.send()
+qwer.send()
+asdf.send()

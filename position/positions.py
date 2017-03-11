@@ -21,6 +21,7 @@ class ObjectPositions(object):
         i = 0
         for s_token in self._position:
             result[i] = (self._position[s_token].lat,self._position[s_token].lon)
+            i += 1
         return result
 
 class PeoplePositions(ObjectPositions):
@@ -34,6 +35,7 @@ class PeoplePositions(ObjectPositions):
         i = 0
         for s_token in self._callCarPosition:
             result[i] = (self._callCarPosition[s_token].lat,self._callCarPosition[s_token].lon)
+            i += 1
         return result
 
 
