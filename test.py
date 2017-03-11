@@ -20,6 +20,7 @@ def getPage(url,post = None,decode = 'UTF-8'):
         print 'GET Page: %s error : %s ' % (url,e)
 
 URL = 'http://127.0.0.1:8000/'
+#URL = 'http://lcyown.cn:2000/'
 
 def getToken(data):
     data = json.loads(data)
@@ -121,4 +122,38 @@ class User(object):
     def getpeoples(self):
         return getPage(URL+'position/getcars',{
             'token':self.token,
-    }) 
+        }) 
+    def callcar(self):
+        return getPage(URL+'position/callcar',{
+            'token':self.token,
+            'latitude':self.position[0],
+            'longitude':self.position[1],
+        }) 
+    def getcallcar(self):
+        return getPage(URL+'position/getcallcarpeoples',{
+            'token':self.token,
+        }) 
+    def saveposition(self,tag=None):
+        data = {
+            'token':self.token,
+            'latitude':self.position[0],
+            'longitude':self.position[1],
+            'tag':tag,
+        }
+        if tag:
+            data['tag'] = tag
+        return getPage(URL+'position/saveposition',data)  
+    def getpositions(self,tag=None):
+        data={
+            'token':self.token,
+            'tag':tag,
+        }
+        if tag:
+            data['tag'] = tag        
+        return getPage(URL+'position/getpositions',data)            
+
+qwer = User()
+qwer.username = 'qwer'
+qwer.password = 'qwer'
+print 'qwer login ' + str(qwer.login())
+

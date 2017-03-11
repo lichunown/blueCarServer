@@ -19,9 +19,24 @@ class ObjectPositions(object):
     def getPositions(self):
         result = [(0,0),]*len(self._position)
         i = 0
-        for item in self._position:
-            result[i] = (self._position[item].lat,self._position[item].lon)
+        for s_token in self._position:
+            result[i] = (self._position[s_token].lat,self._position[s_token].lon)
         return result
 
+class PeoplePositions(ObjectPositions):
+    def __init__(self):
+        ObjectPositions.__init__(self)
+        self._callCarPosition = {}
+    def changeCallCarPosition(self,token,lat,lon):
+        self._callCarPosition[token] = Position(lat,lon)
+    def getCallCarPositons(self):
+        result = [(0,0),]*len(self._callCarPosition)
+        i = 0
+        for s_token in self._callCarPosition:
+            result[i] = (self._callCarPosition[s_token].lat,self._callCarPosition[s_token].lon)
+        return result
+
+
+
 CarPositions = ObjectPositions()
-peoplePositions = ObjectPositions()
+peoplePositions = PeoplePositions()

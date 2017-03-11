@@ -23,5 +23,8 @@ urlpatterns = [
     url(r'send$',views.send,name='send'),
     url(r'getcars$',views.getcars,name='getcars'),
     url(r'getpeoples$',views.getpeoples,name='getpeoples'),
-
+    url(r'callcar$',views.callcar,name='callcar'),
+    url(r'getcallcarpeoples$',views.getcallcarpeoples,name='getcallcarpeoples'),
+    url(r'saveposition$',views.saveposition,name='saveposition'),
+    url(r'getpositions$',views.getpositions,name='getpositions'),
 ]

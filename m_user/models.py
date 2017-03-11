@@ -4,6 +4,7 @@ from django.utils.encoding import smart_unicode
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 COLLEGES=(
     ('tongxin','通信工程学院'),
