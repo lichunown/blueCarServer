@@ -19,7 +19,7 @@ class Token(object):
         if not user:
             return None
         else:
-            return bool(user.iscar)
+            return bool(int(user.iscar))
     def dropToken(self,token):
         print self._loginTokens
         try:
