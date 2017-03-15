@@ -1,4 +1,4 @@
-
+#encoding:utf-8
 class Position(object):# Latitude and longitude
     def __init__(self,Latitude=.0,longitude=.0):
         self.lat = Latitude
@@ -42,3 +42,7 @@ class PeoplePositions(ObjectPositions):
 
 CarPositions = ObjectPositions()
 peoplePositions = PeoplePositions()
+
+'''
+未验证token是否合法
+'''
