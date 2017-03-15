@@ -9,6 +9,11 @@ class Token(object):
         self._loginTokens = {}
         self._md5 = hashlib.md5() 
     def createToken(self,user):
+        if self._loginTokens:
+            for oldToken in self._loginTokens:
+                if self._loginTokens[oldToken] == user:
+                    self.dropToken(oldToken)
+                    break
         self._md5.update(str(user.username))
         self._loginTokens[str(self._md5.hexdigest())] = user
         return str(self._md5.hexdigest())
@@ -21,7 +26,7 @@ class Token(object):
         else:
             return bool(int(user.iscar))
     def dropToken(self,token):
-        print self._loginTokens
+        print 'drop '+token
         try:
             user = self._loginTokens.pop(token)
             return user
