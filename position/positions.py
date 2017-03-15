@@ -58,6 +58,3 @@ class PeoplePositions(ObjectPositions):
 CarPositions = ObjectPositions()
 peoplePositions = PeoplePositions()
 
-'''
-未验证token是否合法
-'''
