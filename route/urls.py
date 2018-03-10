@@ -20,12 +20,9 @@ urlpatterns = [
 
     # url(r'^invite/tutor/$',views.invitetutor,name='invitetutor'),
     # url(r'^invite/student/$',views.invitestudent,name='invitestudent'),
-    url(r'send$',views.send,name='send'),
-    url(r'gettime$',views.gettime,name='gettime'),
-    url(r'getcars$',views.getcars,name='getcars'),
-    url(r'getpeoples$',views.getpeoples,name='getpeoples'),
-    # url(r'callcar$',views.callcar,name='callcar'),
-    url(r'getcallcarpeoples$',views.getcallcarpeoples,name='getcallcarpeoples'),
-    url(r'saveposition$',views.saveposition,name='saveposition'),
-    url(r'getpositions$',views.getpositions,name='getpositions'),
+    url(r'create$',views.create,name='create'),
+    url(r'delete$',views.delete,name='delete'),
+    url(r'modify$',views.modify,name='modify'),
+    url(r'getdata$',views.getdata,name='getdata'),
+    url(r'list$',views.list,name='list'),
 ]

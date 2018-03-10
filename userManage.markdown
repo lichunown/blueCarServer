@@ -8,6 +8,8 @@
 
 
 
+
+
 | 网址            | 类别     |      |
 | ------------- | ------ | ---- |
 | /user/signup  | 用户注册   |      |
@@ -16,22 +18,38 @@
 | /user/modify  | 用户数据修改 |      |
 | /user/getdata | 获取用户数据 |      |
 
+### 获取验证码
+
+GET`/user/vericode`
+
+#### 返回
+
+```python
+{
+          'action':'signup',
+          'result':'succeed',
+}
+```
+
+
+
 ### 注册
 
 POST `/user/signup`
 
-| key      | example  | info |
-| -------- | -------- | ---- |
-| username | "string" | 用户名  |
-| password | "string" | 密码   |
-
+| key      | example  | info  |
+| -------- | -------- | ----- |
+| username | "string" | 用户名   |
+| password | "string" | 密码    |
+| vericode | "dscs"   | 验证码   |
+| veriid   | "dscs"   | 验证码标识 |
 #### 注册成功返回
 
 ```python
   {
           'action':'signup',
           'result':'succeed',
-          'username':'usernameExist',
+          'username':'name',
    }
 ```
 
@@ -50,10 +68,12 @@ POST `/user/signup`
 ### 用户登录
 POST `/user/login`
 
-| key      | example  | info |
-| -------- | -------- | ---- |
-| username | "string" | 用户名  |
-| password | "string" | 密码   |
+| key      | example  | info  |
+| -------- | -------- | ----- |
+| username | "string" | 用户名   |
+| password | "string" | 密码    |
+| vericode | "dscs"   | 验证码   |
+| veriid   | "dscs"   | 验证码标识 |
 
 #### 注册成功返回
 

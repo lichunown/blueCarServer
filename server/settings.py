@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'm_user',
     'position',
+    'route',
 )
 
 MIDDLEWARE_CLASSES = (

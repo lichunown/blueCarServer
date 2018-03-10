@@ -6,23 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-COLLEGES=(
-    ('tongxin','通信工程学院'),
-    ('dianzi','电子工程学院'),
-    ('jisuanji','计算机学院'),
-    ('jidian','机电工程学院'),
-    ('wuguang','物理与光电工程学院'),
-    ('jingguan','经济与管理学院'),
-    ('shutong','数学与统计学院'),
-    ('renwen','人文学院'),
-    ('waiguoyu','外国语学院'),
-    ('ruanjian','软件学院'),
-    ('weidianzi','微电子学院'),
-    ('shengke','生命科学技术学院'),
-    ('kongjian','空间科学与技术学院'),
-    ('cailiao','先进材料与纳米科技学院'),
-    ('wangan','网络与信息安全学院'),
-)
+
 ISCARCHOICES = (
     ('0','student'),
     ('1','driver'),
@@ -32,7 +16,6 @@ class m_User(models.Model):
     username = models.CharField(max_length=50)
     pwd = models.CharField(max_length=33)
     iscar = models.CharField(max_length=1,choices=ISCARCHOICES, default='0')
-    college = models.CharField(max_length=20,choices=COLLEGES, blank=True)#need add limit
     studentid = models.CharField(max_length=11,blank=True)
     truename = models.CharField(max_length=20,blank=True)
     def __unicode__(self):

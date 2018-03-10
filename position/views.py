@@ -3,43 +3,80 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-from positions import CarPositions,peoplePositions
+from positions import CarPositions,peoplePositions,CARSTATUS,PEOPLESTATUS
 from m_user.token import userToken
 from m_user.models import m_User
 from .models import SavePosition
 from django.utils import timezone
 # Create your views here.
-
-
+import time
+from route.routeManage import RouteNames
 
 @csrf_exempt
 def send(request):
     if request.method=='POST':
         token = request.POST.get('token')
+        if not userToken.exists(token):
+            return HttpResponse(json.dumps({
+                'action':'send',
+                'result':'error',
+                'errorResult':'tokenError',
+            }))
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
-        if userToken.isCar(token):
-            CarPositions.changePosition(token,latitude,longitude)
+        status = request.POST.get('status')
+        time = request.POST.get('time')
+        route = request.POST.get('route')
+        if route not in RouteNames:
             return HttpResponse(json.dumps({
                 'action':'send',
-                'result':'succeed',
-                'position':'CarPositions',
+                'result':'error',
+                'position':'routeNotExist',
             }))
+        if userToken.isCar(token):
+            if status in CARSTATUS:
+                CarPositions.changePosition(route,token,latitude,longitude,time,status)
+                return HttpResponse(json.dumps({
+                    'action':'send',
+                    'result':'succeed',
+                    'position':'CarPositions',
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'action':'send',
+                    'result':'error',
+                    'errorResult':'carStatusError',
+                }))  
         else:
-            peoplePositions.changePosition(token,latitude,longitude)
-            return HttpResponse(json.dumps({
-                'action':'send',
-                'result':'succeed',
-                'position':'peoplePositions',
-            }))            
+            if status in PEOPLESTATUS:
+                peoplePositions.changePosition(route,token,latitude,longitude,time,status)
+                return HttpResponse(json.dumps({
+                    'action':'send',
+                    'result':'succeed',
+                    'position':'peoplePositions',
+                }))  
+            else:
+                return HttpResponse(json.dumps({
+                    'action':'send',
+                    'result':'error',
+                    'errorResult':'peopleStatusError',
+                }))        
 
 @csrf_exempt
 def getcars(request):
     if request.method =='POST':
         token = request.POST.get('token')
-        positions = CarPositions.getPositions()
+        route = request.POST.get('route')
+        if route not in RouteNames:
+            return HttpResponse(json.dumps({
+                'action':'send',
+                'result':'error',
+                'position':'routeNotExist',
+            }))
+        isall = request.POST.get('isall')
+        positions = CarPositions.getPositions(route) if isall != 'true' else peoplePositions.getAllPositions(route)
         return HttpResponse(json.dumps({
-            'action':'getpeoples',
+            'action':'getcars',
             'result':'succeed',
             'positions':positions,
         }))
@@ -48,32 +85,48 @@ def getcars(request):
 def getpeoples(request):
     if request.method =='POST':
         token = request.POST.get('token')
-        positions = peoplePositions.getPositions()
+        route = request.POST.get('route')
+        if route not in RouteNames:
+            return HttpResponse(json.dumps({
+                'action':'send',
+                'result':'error',
+                'position':'routeNotExist',
+            }))
+        isall = request.POST.get('isall')
+        print(isall)
+        positions = peoplePositions.getPositions(route) if  isall != 'true' else peoplePositions.getAllPositions(route)
         return HttpResponse(json.dumps({
             'action':'getpeoples',
             'result':'succeed',
             'positions':positions,
         }))
 
-
 @csrf_exempt
-def callcar(request):
-    if request.method=='POST':
-        token = request.POST.get('token')
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
-        if token:
-            peoplePositions.changeCallCarPosition(token,latitude,longitude)
-            return HttpResponse(json.dumps({
-                'action':'callcar',
-                'result':'succeed',
-            }))
-        else:
-            return HttpResponse(json.dumps({
-                'action':'callcar',
-                'result':'error',
-                'errorResult':'tokenDoNotExist',
-            }))            
+def gettime(request):
+    return HttpResponse(json.dumps({
+        'action':'gettime',
+        'result':'succeed',
+        'time':time.time(),
+    }))
+
+# @csrf_exempt
+# def callcar(request):
+#     if request.method=='POST':
+#         token = request.POST.get('token')
+#         latitude = request.POST.get('latitude')
+#         longitude = request.POST.get('longitude')
+#         if token:
+#             peoplePositions.changeCallCarPosition(token,latitude,longitude)
+#             return HttpResponse(json.dumps({
+#                 'action':'callcar',
+#                 'result':'succeed',
+#             }))
+#         else:
+#             return HttpResponse(json.dumps({
+#                 'action':'callcar',
+#                 'result':'error',
+#                 'errorResult':'tokenDoNotExist',
+#             }))            
     
 
 @csrf_exempt
@@ -81,8 +134,15 @@ def getcallcarpeoples(request):
     if request.method=='POST':
         token = request.POST.get('token')
         user = userToken.getUser(token)
+        route = request.POST.get('route')
+        if route not in RouteNames:
+            return HttpResponse(json.dumps({
+                'action':'send',
+                'result':'error',
+                'position':'routeNotExist',
+            }))
         if user:
-            positions = peoplePositions.getCallCarPositons()
+            positions = peoplePositions.getCallCarPositons(route) 
             return HttpResponse(json.dumps({
                 'action':'getcallcarpeoples',
                 'result':'succeed',

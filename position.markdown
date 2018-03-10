@@ -16,35 +16,41 @@
 
 POST `/position/send`
 
-| key       | example                       | info   |
-| --------- | ----------------------------- | ------ |
-| token     | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |
-| latitude  | 100                           | 纬度     |
-| longitude | 100                           | 经度     |
-
-
+| key       | example                         | info   |
+| --------- | ------------------------------- | ------ |
+| token     | "e32ry3928rfh23o9tw9fhr92t3g"   | token值 |
+| state     | "start"\|"stop"\|"run"\|"pause" | 状态     |
+| latitude  | 100                             | 纬度     |
+| longitude | 100                             | 经度     |
+| speed     | 100                             | 瞬时速度   |
+| time      | 100                             | 时间     |
 
 
 
 ### 获取车辆坐标
 
-POST `/position/send`
+POST `/position/getcars`
 
 | key   | example                       | info   |
 | ----- | ----------------------------- | ------ |
 | token | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |
-
+| route | "xidian"                      | 线路或园区名 |
 ####  返回数据
 
 ```javascript
 {
-        'action':'getpeoples',
+        'action':'getcars',
         'result':'succeed',
         'positions':[
-        		[100,100],
-        		[50,50],
-        		[64,54]
-        	]
+            {
+              'state':'run',
+              'latitude':'50',
+              'longitude':'50',
+              'speed':'50',
+              'time':''
+            },
+			.....
+     	]
 }
 ```
 
@@ -59,6 +65,7 @@ POST `/position/getpeoples`
 | key   | example                       | info   |
 | ----- | ----------------------------- | ------ |
 | token | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |
+| route | "xidian"                      | 线路或园区名 |
 
 ####  返回数据
 
@@ -67,59 +74,15 @@ POST `/position/getpeoples`
         'action':'getpeoples',
         'result':'succeed',
         'positions':[
-        		[100,100],
-        		[50,50],
-        		[64,54]
-        	]
-}
-```
-
-
-
-
-
-### 呼叫车辆
-
-POST `/position/callcar`
-
-|    key    |            example            |  info  |  必须  |
-| :-------: | :---------------------------: | :----: | :--: |
-|   token   | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |  *   |
-| latitude  |              100              |   纬度   |  *   |
-| longitude |              100              |   经度   |  *   |
-
-####  返回数据
-
-```javascript
-{
-          'action':'callcar',
-          'result':'succeed',
-}
-```
-
-
-
-
-### 获取呼叫车辆所有人位置
-
-POST `/position/getcallcarpeoples`
-
-|  key  |            example            |  info  |  必须  |
-| :---: | :---------------------------: | :----: | :--: |
-| token | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |  *   |
-
-
-####  返回数据
-
-```javascript
-{
-        'action':'getcallcarpeoples',
-        'result':'succeed',
-        'positions':[
-        		[100,100],
-        		[50,50],
-        		[64,54]
-        	]
+            {
+              'state':'run',
+              'latitude':'50',
+              'longitude':'50',
+              'speed':'50',
+              'time':''
+            },
+			.....
+     	]
 }
 ```
 

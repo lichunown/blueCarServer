@@ -1,57 +1,123 @@
 #encoding:utf-8
 from m_user.token import userToken
 import time
+from collections import deque
+
+'''
+class Status(object):
+    def __init__(self,status, latitude = 0, longitude = 0, time = None, speed = None):
+        self.status = status
+        self.latitude = latitude
+        self.longitude = longitudes
+        self.time = time
+        self.speed = speed
+    def dict(self):
+        return self.__dict__
+
+CARSTATUS = [
+    'run',
+    'stop',
+    'pause',
+    'start',
+]
+PEOPLESTATUS = [
+    'non',
+    'call',
+]
+
+class Obj(object):
+    def __init__(self):
+        self.status = deque(10)
+    def addStatus(self,status):
+        self.status.append(status)
+
+class Car(Obj):
+    def __init__(self):
+        super(Car,self).__init__()
+
+class People(Obj):
+    def __init__(self):
+        super(People,self).__init__()
+
+
+
+'''
+CARSTATUS = [
+    'run',
+    'stop',
+    'pause',
+    'start',
+]
+PEOPLESTATUS = [
+    'non',
+    'call',
+]
+
 
 class Position(object):# Latitude and longitude
-    def __init__(self,Latitude=.0,longitude=.0):
+    def __init__(self,Latitude=.0,longitude=.0,time = None,status = None):
         self.lat = Latitude
         self.lon = longitude
-        self.time = time.time()
+        self.time = time
+        self.status = status
 
 class ObjectPositions(object):
     def __init__(self):
-        self._position = {}
-        self._CHECKTIMELIMIT = 5
+        self._route = {}
+        self._CHECKTIMELIMIT = 60*60
+        self._DEQUELIMIT = 5
         self._checktime = time.time()
-    def changePosition(self,token,lat,lon):
-        if userToken.getUser(token):
-            self._position[token] = Position(lat,lon)
+    def changePosition(self,route,token,lat,lon,time = None,status = None):
+        if userToken.exists(token):
+            if not self._route.get(route):
+                self._route[route] = {}
+            position = self._route[route]
+            if not position.get(token):
+                position[token] = deque(maxlen = self._DEQUELIMIT)
+            position[token].append(Position(lat,lon,time,status)) 
         else:
-            self.removePosition(token)
-    def removePosition(self,token):
+            self.removePosition(route, token)
+
+    def removePosition(self,route,token):
         try:
             print 'remove ' + token
-            return self._position.pop(token)
+            return self._route[route].pop(token)
         except KeyError:
             return None
+
     def check(self):
-        tempposition = self._position.copy()
-        for token in tempposition:
-            if time.time() - tempposition[token].time >= self._CHECKTIMELIMIT:
-                self.removePosition(token)
-    def getPositions(self):
-        if time.time()-self._checktime>=self._CHECKTIMELIMIT:
-            self.check()
-        result = [(0,0),]*len(self._position)
-        i = 0
-        for s_token in self._position:
-            result[i] = (self._position[s_token].lat,self._position[s_token].lon)
-            i += 1
+        for route in self._route:
+            tempposition = self._route[route].copy()
+            for token in tempposition:
+                if time.time() - tempposition[token][-1].time >= self._CHECKTIMELIMIT:
+                    self.removePosition(route,token)
+
+    def getPositions(self,route):
+        if time.time() - self._checktime > self._CHECKTIMELIMIT:
+            self.check(route)
+        if self._route.get(route):
+            return [ self._route[route][token][-1].__dict__ for token in self._route[route] ]
+        else:
+            return []
+
+    def getAllPositions(self,route):
+        if time.time() - self._checktime > self._CHECKTIMELIMIT:
+            self.check(route)
+        # return [ pos.__dict__ for pos in self._route[route][token] for token in self._route[route] ]
+        result = []
+        for token in self._route[route]:
+            result.extend([ pos.__dict__ for pos in self._route[route][token] ])
         return result
 
 class PeoplePositions(ObjectPositions):
     def __init__(self):
-        ObjectPositions.__init__(self)
+        super(PeoplePositions,self).__init__()
         self._callCarPosition = {}
-    def changeCallCarPosition(self,token,lat,lon):
-        self._callCarPosition[token] = Position(lat,lon)
-    def getCallCarPositons(self):
-        result = [(0,0),]*len(self._callCarPosition)
-        i = 0
-        for s_token in self._callCarPosition:
-            result[i] = (self._callCarPosition[s_token].lat,self._callCarPosition[s_token].lon)
-            i += 1
-        return result
+    # def changeCallCarPosition(self,token,lat,lon):
+    #     self._callCarPosition[token] = Position(lat,lon)
+    def getCallCarPositons(self,route):
+        return list(filter(lambda x: x != None, [ self._route[route][token][-1].__dict__ if self._route[route][token][-1].__dict__['status'] == 'call' else None \
+                 for token in self._route[route] ]))
 
 
 
