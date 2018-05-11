@@ -90,7 +90,7 @@ class ObjectPositions(object):
         for route in self._route:
             tempposition = self._route[route].copy()
             for token in tempposition:
-                if time.time() - tempposition[token][-1].time >= self._CHECKTIMELIMIT:
+                if float(time.time()) - float(tempposition[token][-1].time) >= self._CHECKTIMELIMIT:
                     self.removePosition(route,token)
 
     def getPositions(self,route):
