@@ -13,6 +13,7 @@ def addtoDicts(dicts,str_type,name):
 def initList():
     dicts = {}
     names = []
+    print(RouteNames)
     for route in Route.objects.all():
         addtoDicts(dicts, route.type, route.name)
         names.append(route.name)

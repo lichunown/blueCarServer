@@ -6,3 +6,5 @@ class Route(models.Model):
     createuser = models.ForeignKey(m_User,related_name='Route')
     data = models.TextField(blank=True,default=None)
     type = models.CharField(max_length=50,blank=True,default=None)
+    def __unicode__(self):
+        return smart_unicode(self.name)

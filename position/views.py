@@ -27,6 +27,7 @@ def send(request):
         status = request.POST.get('status')
         time = request.POST.get('time')
         route = request.POST.get('route')
+        # print(RouteNames)
         if route not in RouteNames:
             return HttpResponse(json.dumps({
                 'action':'send',
