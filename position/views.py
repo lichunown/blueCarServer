@@ -9,7 +9,7 @@ from m_user.models import m_User
 from .models import SavePosition
 from django.utils import timezone
 # Create your views here.
-import time
+import time as tm
 from route.routeManage import RouteNames
 
 @csrf_exempt
@@ -28,6 +28,8 @@ def send(request):
         time = request.POST.get('time')
         route = request.POST.get('route')
         # print(RouteNames)
+        if time is None:
+            time = tm.time()
         if route not in RouteNames:
             return HttpResponse(json.dumps({
                 'action':'send',
