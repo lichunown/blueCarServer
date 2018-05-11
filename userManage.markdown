@@ -18,18 +18,7 @@
 | /user/modify  | 用户数据修改 |      |
 | /user/getdata | 获取用户数据 |      |
 
-### 获取验证码
 
-GET`/user/vericode`
-
-#### 返回
-
-```python
-{
-          'action':'signup',
-          'result':'succeed',
-}
-```
 
 
 
@@ -193,3 +182,12 @@ POST `/user/login`
 | ---- | --------------- | ----------------------------- | ------ |
 |      | token           | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |
 | *    | getdatausername | "username"                    | 用户名    |
+
+### 修改密码
+  POST `/user/modifypassword`
+
+| key         | example                       | info   |
+| ----------- | :---------------------------- | ------ |
+| token       | "e32ry3928rfh23o9tw9fhr92t3g" | token值 |
+| password    | ************                  | 原始密码   |
+| newpassword | **********************        | 新密码    |

@@ -114,6 +114,7 @@ def getdata(request):
             return HttpResponse(json.dumps({
                 'action':'getRouteData',
                 'result':'succeed',
+                'name':name,
                 'type':route.type,
                 'data':route.data,
             }))

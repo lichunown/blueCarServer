@@ -2,28 +2,19 @@
 
 ## 用户坐标管理
 
-| url                         | description |
-| --------------------------- | ----------- |
-| /position/send              | 发送用户自己的坐标   |
-| /position/getcars           | 获取车辆坐标      |
-| /position/getpeoples        | 获取等车人坐标     |
-| /position/callcar           | 呼叫车辆        |
-| /position/getcallcarpeoples | 获取呼叫车辆的人位置  |
-| /position/saveposition      | 保存自己的位置     |
-| /position/getpositions      | 获取用户保存的位置   |
 
 ### 发送坐标
 
 POST `/position/send`
 
-| key       | example                         | info   |
-| --------- | ------------------------------- | ------ |
-| token     | "e32ry3928rfh23o9tw9fhr92t3g"   | token值 |
-| state     | "start"\|"stop"\|"run"\|"pause" | 状态     |
-| latitude  | 100                             | 纬度     |
-| longitude | 100                             | 经度     |
-| speed     | 100                             | 瞬时速度   |
-| time      | 100                             | 时间     |
+| key       | example                                  | info   |
+| --------- | ---------------------------------------- | ------ |
+| token     | "e32ry3928rfh23o9tw9fhr92t3g"            | token值 |
+| state     | "start"\|"stop"\|"run"\|"pause"\| "non"\|"call"\|"dst" | state  |
+| latitude  | 100                                      | 纬度     |
+| longitude | 100                                      | 经度     |
+| speed     | 100                                      | 瞬时速度   |
+| time      | 100                                      | 时间     |
 
 
 

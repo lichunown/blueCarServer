@@ -134,7 +134,40 @@ def modify(request):
                 'errorResult':'tokenDoNotExist',
             }))
 
-
+@csrf_exempt
+def modifypassword(request):
+    if request.method=='POST':
+        if request.POST.get('token'):
+            token = request.POST.get('token')
+            user = userToken.getUser(request.POST.get('token'))
+            if not user:
+                return HttpResponse(json.dumps({
+                    'action':'modifypassword',
+                    'result':'error',
+                    'errorResult':'userTokenError',
+                }))                
+            oldpassword = request.POST.get('password')
+            if user.pwd != encodePwd.encode(str(oldpassword)):
+                return HttpResponse(json.dumps({
+                    'action':'modifypassword',
+                    'result':'error',
+                    'errorResult':'passwordError',
+                })) 
+            newpassword = request.POST.get('newpassword')
+            user.pwd = encodePwd.encode(newpassword)               
+            user.save()
+            userToken.dropToken(token)
+            return HttpResponse(json.dumps({
+                'action':'modifypassword',
+                'username':user.username,
+                'result':'succeed',
+            }))
+        else:
+            return HttpResponse(json.dumps({
+                'action':'modifypassword',
+                'result':'error',
+                'errorResult':'tokenDoNotExist',
+            }))
 
 @csrf_exempt
 def getdata(request):

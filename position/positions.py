@@ -51,13 +51,14 @@ CARSTATUS = [
 PEOPLESTATUS = [
     'non',
     'call',
+    'dst',
 ]
 
 
 class Position(object):# Latitude and longitude
     def __init__(self,Latitude=.0,longitude=.0,time = None,status = None):
-        self.lat = Latitude
-        self.lon = longitude
+        self.latitude = Latitude
+        self.longitude = longitude
         self.time = time
         self.status = status
 
@@ -85,7 +86,7 @@ class ObjectPositions(object):
         except KeyError:
             return None
 
-    def check(self):
+    def check(self,route = None):
         for route in self._route:
             tempposition = self._route[route].copy()
             for token in tempposition:
@@ -116,8 +117,9 @@ class PeoplePositions(ObjectPositions):
     # def changeCallCarPosition(self,token,lat,lon):
     #     self._callCarPosition[token] = Position(lat,lon)
     def getCallCarPositons(self,route):
-        return list(filter(lambda x: x != None, [ self._route[route][token][-1].__dict__ if self._route[route][token][-1].__dict__['status'] == 'call' else None \
-                 for token in self._route[route] ]))
+        return list(filter(lambda x: x != None, [ self._route[route][token][-1].__dict__ \
+            if self._route[route][token][-1].__dict__['status'] == 'call' or self._route[route][token][-1].__dict__['status'] == 'dst' else None \
+            for token in self._route[route] ]))
 
 
 
